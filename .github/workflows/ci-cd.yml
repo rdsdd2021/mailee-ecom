@@ -34,16 +34,10 @@ jobs:
     name: 🚀 Deploy to Production Server
     needs: lint-and-test
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Execute deployment via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST || '103.82.158.106' }}
-          username: ${{ secrets.SERVER_USER || 'rds2197' }}
-          key: ${{ secrets.SERVER_SSH_KEY }}
-          port: ${{ secrets.SERVER_PORT || 22 }}
-          script: |
-            cd /home/rds2197/ecom
-            bash deploy.sh
+      - name: Execute deployment script
+        run: |
+          cd /home/rds2197/ecom
+          bash deploy.sh
