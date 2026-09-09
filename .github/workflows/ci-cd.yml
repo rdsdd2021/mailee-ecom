@@ -29,15 +29,3 @@ jobs:
       - name: Check PHP Syntax (Lint)
         run: |
           find app config database routes modules -name "*.php" -print0 | xargs -0 -n1 php -l
-
-  deploy:
-    name: 🚀 Deploy to Production Server
-    needs: lint-and-test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: self-hosted
-
-    steps:
-      - name: Execute deployment script
-        run: |
-          cd /home/rds2197/ecom
-          bash deploy.sh
