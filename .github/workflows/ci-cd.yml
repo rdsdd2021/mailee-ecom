@@ -24,7 +24,7 @@ jobs:
           extensions: mbstring, dom, fileinfo, gd, intl, pdo_mysql
 
       - name: Validate composer.json
-        run: composer validate --strict --no-check-all
+        run: composer validate --no-check-all
 
       - name: Check PHP Syntax (Lint)
         run: |

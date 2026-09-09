@@ -2,6 +2,7 @@
     "name": "envaysoft/fleetcart",
     "description": "The FleetCart eCommerce CMS.",
     "type": "project",
+    "license": "proprietary",
     "authors": [
         {
             "name": "Envay Soft",
