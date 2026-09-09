@@ -16,8 +16,7 @@ fi
 # Ensure correct permissions on storage and bootstrap/cache
 echo "🔐 Setting permissions..."
 mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache
-sudo chown -R www-data:www-data storage bootstrap/cache || chown -R www-data:www-data storage bootstrap/cache || true
-sudo chmod -R 777 storage bootstrap/cache || chmod -R 777 storage bootstrap/cache || true
+chmod -R 777 storage bootstrap/cache || true
 
 # Ensure containers are running
 echo "🐳 Rebuilding and starting Docker services..."
