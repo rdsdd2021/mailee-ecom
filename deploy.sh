@@ -28,7 +28,9 @@ docker compose exec -u 0 -T ecom_app chown -R www-data:www-data /var/www/html/st
 docker compose exec -u 0 -T ecom_app chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache || true
 
 # Run Laravel optimizations inside container as www-data user
-echo "⚡ Running Laravel optimizations..."
+echo "⚡ Running Laravel optimizations and sync..."
+docker compose exec -u www-data -T ecom_app php artisan storage:link || true
+docker compose exec -u www-data -T ecom_app php artisan mailee:sync-db || true
 docker compose exec -u www-data -T ecom_app php artisan config:clear || true
 docker compose exec -u www-data -T ecom_app php artisan cache:clear || true
 docker compose exec -u www-data -T ecom_app php artisan view:clear || true
