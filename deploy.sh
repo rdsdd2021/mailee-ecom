@@ -21,6 +21,7 @@ chmod -R 777 storage bootstrap/cache || true
 # Ensure containers are running
 echo "🐳 Rebuilding and starting Docker services..."
 docker compose up -d --build
+docker compose exec -T ecom_web nginx -s reload || true
 
 # Fix container permissions as root
 docker compose exec -u 0 -T ecom_app chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache || true
