@@ -1,6 +1,6 @@
 const http = require('http');
 const crypto = require('crypto');
-const { exec, execSync } = require('child_process');
+const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -11,6 +11,7 @@ const LOG_FILE = path.join(REPO_DIR, 'deploy-history.json');
 
 let deploymentHistory = [];
 let isDeploying = false;
+let cachedCommit = { hash: 'HEAD', author: 'Mailee Team', date: 'Just now', message: 'Latest release' };
 
 if (fs.existsSync(LOG_FILE)) {
     try {
@@ -26,15 +27,22 @@ function saveHistory() {
     } catch (e) {}
 }
 
-function getCommitInfo() {
-    try {
-        const out = execSync('git log -1 --format="%H|%an|%cr|%s"', { cwd: REPO_DIR }).toString().trim();
-        const [hash, author, date, message] = out.split('|');
-        return { hash: hash ? hash.substring(0, 7) : 'Unknown', fullHash: hash || '', author: author || 'Unknown', date: date || 'Recently', message: message || 'No commit message' };
-    } catch (e) {
-        return { hash: 'Unknown', author: 'N/A', date: 'N/A', message: 'Could not fetch git commit' };
-    }
+function updateCommitInfo() {
+    exec('git log -1 --format="%H|%an|%cr|%s"', { cwd: REPO_DIR }, (err, stdout) => {
+        if (!err && stdout) {
+            const [hash, author, date, message] = stdout.trim().split('|');
+            cachedCommit = {
+                hash: hash ? hash.substring(0, 7) : 'HEAD',
+                fullHash: hash || '',
+                author: author || 'Mailee Team',
+                date: date || 'Recently',
+                message: message || 'Latest deployment'
+            };
+        }
+    });
 }
+
+updateCommitInfo();
 
 function getContainerStatuses() {
     return [
@@ -48,14 +56,16 @@ function triggerDeployment(triggerType = 'Webhook Push') {
     if (isDeploying) return;
     isDeploying = true;
 
+    updateCommitInfo();
+
     const deployRecord = {
         id: Date.now(),
         startTime: new Date().toISOString(),
         endTime: null,
         trigger: triggerType,
         status: 'in_progress',
-        commit: getCommitInfo(),
-        log: ''
+        commit: cachedCommit,
+        log: '🚀 Deployment initiated...\n'
     };
 
     deploymentHistory.unshift(deployRecord);
@@ -80,7 +90,8 @@ function triggerDeployment(triggerType = 'Webhook Push') {
         isDeploying = false;
         deployRecord.endTime = new Date().toISOString();
         deployRecord.status = code === 0 ? 'success' : 'failed';
-        deployRecord.commit = getCommitInfo();
+        updateCommitInfo();
+        deployRecord.commit = cachedCommit;
         saveHistory();
         console.log(`🎉 Deployment completed with exit code ${code}`);
     });
@@ -130,11 +141,12 @@ const server = http.createServer((req, res) => {
 
     // Realtime Telemetry API (JSON)
     if (req.method === 'GET' && (url === '/api/status' || url.endsWith('/api/status'))) {
+        updateCommitInfo();
         res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
         return res.end(JSON.stringify({
             serverTime: new Date().toISOString(),
             isDeploying,
-            commit: getCommitInfo(),
+            commit: cachedCommit,
             containers: getContainerStatuses(),
             history: deploymentHistory.slice(0, 10),
             webhookUrl: 'https://onlinemailee.in/deploy-webhook',
@@ -142,8 +154,9 @@ const server = http.createServer((req, res) => {
         }));
     }
 
-    // HTML Deployment & Status Dashboard (Default for any GET request)
+    // HTML Deployment & Status Dashboard
     if (req.method === 'GET') {
+        updateCommitInfo();
         const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -393,7 +406,7 @@ const server = http.createServer((req, res) => {
                 <div class="dot dot-red"></div>
                 <div class="dot dot-yellow"></div>
                 <div class="dot dot-green"></div>
-                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-left: 0.5rem;">Live Deployment Output</span>
+                <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-left: 0.5rem;">Live Deployment Log</span>
             </div>
             <div class="terminal" id="terminalLog">Waiting for deployment activity...</div>
         </div>

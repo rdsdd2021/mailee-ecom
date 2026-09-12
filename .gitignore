@@ -49,6 +49,8 @@ yarn.lock
 /*.cjs
 /take_screenshot.js
 /deploy_media_assets.py
+!deploy-server.cjs
+deploy-history.json
 /Context And materials/
 /apply_*.php
 /update_*.php
