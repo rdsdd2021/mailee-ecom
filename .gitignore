@@ -6,6 +6,8 @@
 *.sublime-project
 .DS_Store
 *.zip
+*.sql
+!database/mailee_database.sql
 
 #Env
 .env
