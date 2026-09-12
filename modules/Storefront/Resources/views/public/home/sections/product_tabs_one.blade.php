@@ -1,4 +1,4 @@
-<section x-data="ProductTabsOne({{ $productTabsOne }})" class="landscape-tab-products-wrap">
+<section id="authentic-momos" x-data="ProductTabsOne({{ $productTabsOne }})" class="landscape-tab-products-wrap py-4">
     <div class="container">
         <div class="landscape-left-tab-products-inner">
             <div class="tab-products-header">

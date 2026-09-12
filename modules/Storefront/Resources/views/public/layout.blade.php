@@ -39,6 +39,8 @@
 
     @stack('styles')
 
+    <link rel="stylesheet" href="{{ asset('css/mailee-modern-ux.css') }}?v={{ time() }}&ux=v4">
+
     {!! setting('custom_header_assets') !!}
 
     <script>
@@ -111,6 +113,7 @@
 @stack('pre-scripts')
 @stack('scripts')
 
-{!! setting('custom_footer_assets') !!}
+
+    {!! setting('custom_footer_assets') !!}
 </body>
 </html>

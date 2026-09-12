@@ -2,8 +2,12 @@
     <div class="container">
         <div class="top-nav">
             <div class="d-flex justify-content-between">
-                <div class="top-nav-left d-none d-lg-block">
-                    <span>{{ setting('storefront_welcome_text') }}</span>
+                <div class="top-nav-left d-none d-lg-flex align-items-center gap-2">
+                    <span class="top-nav-ticker-badge">
+                        <span class="live-pulse-dot"></span>
+                        Direct from Siliguri
+                    </span>
+                    <span class="ms-1 text-white-50">{{ setting('storefront_welcome_text') }}</span>
                 </div>
 
                 <div class="top-nav-right">

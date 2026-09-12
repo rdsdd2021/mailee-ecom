@@ -1,11 +1,5 @@
-<header x-ref="header" x-data="Header" class="header-wrap">
-    <div
-        class="header-wrap-inner"
-        :class="{
-            sticky: isStickyHeader,
-            show: isShowingStickyHeader
-        }"
-    >
+<header x-ref="header" class="header-wrap">
+    <div class="header-wrap-inner">
         <div class="container">
             <div class="d-flex flex-nowrap justify-content-between position-relative">
                 <div class="header-column-left align-items-center">
@@ -17,12 +11,16 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('home') }}" class="header-logo">
-                        @if (is_null($logo))
-                            <h3>{{ setting('store_name') }}</h3>
-                        @else
-                            <img src="{{ $logo }}" alt="{{ setting('store_name') ?? 'Logo' }}">
+                    <a href="{{ route('home') }}" class="header-brand-wrap d-flex align-items-center gap-3">
+                        @if (!is_null($logo))
+                            <div class="header-logo-badge">
+                                <img src="{{ $logo }}" alt="Mailee Mascot" class="header-mascot-img">
+                            </div>
                         @endif
+                        <div class="header-brand-info d-none d-sm-flex flex-column">
+                            <span class="header-brand-title">MAILEE</span>
+                            <span class="header-brand-tagline">MOMOS ON WHEELS • SILIGURI</span>
+                        </div>
                     </a>
                 </div>
 
@@ -80,6 +78,36 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sales Announcement Ticker & Quick Category Ribbon (App-Style CRO) -->
+    <div class="mobile-sales-strip d-lg-none">
+        <div class="mobile-sales-ticker">
+            <span class="ticker-badge">⚡ OFFER</span>
+            <span class="ticker-text">FREE Cold-Chain Delivery over ₹499 • Extra 10% OFF with VIP Pass</span>
+        </div>
+        <div class="mobile-category-pills-bar">
+            <a href="#authentic-momos" class="mob-pill active">
+                <span class="mob-pill-icon">🥟</span>
+                <span class="mob-pill-label">1Kg Momos</span>
+            </a>
+            <a href="#combos-section" class="mob-pill">
+                <span class="mob-pill-icon">🍱</span>
+                <span class="mob-pill-label">Party Combos</span>
+            </a>
+            <a href="#authentic-momos" class="mob-pill">
+                <span class="mob-pill-icon">🫓</span>
+                <span class="mob-pill-label">Parathas</span>
+            </a>
+            <a href="#authentic-momos" class="mob-pill">
+                <span class="mob-pill-icon">🍟</span>
+                <span class="mob-pill-label">Snacks</span>
+            </a>
+            <a href="/vip" class="mob-pill vip-pill">
+                <span class="mob-pill-icon">⭐</span>
+                <span class="mob-pill-label">₹10 VIP Pass</span>
+            </a>
         </div>
     </div>
 </header>

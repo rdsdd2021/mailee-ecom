@@ -13,6 +13,14 @@
         {
             "type": "vcs",
             "url": "https://github.com/EnvaySoft/Laravel-Dotenv-Editor"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EnvaySoft/Laravel-Sidebar"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/EnvaySoft/tinycolor-php"
         }
     ],
     "require": {

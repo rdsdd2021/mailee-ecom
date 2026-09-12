@@ -30,6 +30,7 @@ class HomePageComposer
             'featuredCategories' => $this->featuredCategoriesSection(),
             'threeColumnFullWidthBanners' => $this->threeColumnFullWidthBanners(),
             'productTabsOne' => $this->productTabsOne(),
+            'tab1Products' => $this->tab1Products(),
             'topBrands' => $this->topBrands(),
             'flashSale' => $this->flashSale(),
             'twoColumnBanners' => $this->twoColumnBanners(),
@@ -97,7 +98,23 @@ class HomePageComposer
             if (!is_null(setting("storefront_product_tabs_1_section_tab_{$number}_product_type"))) {
                 return setting("storefront_product_tabs_1_section_tab_{$number}_title");
             }
-        })->filter();
+        })->filter()->values();
+    }
+
+
+    private function tab1Products()
+    {
+        if (!setting('storefront_product_tabs_1_section_enabled')) {
+            return collect();
+        }
+
+        try {
+            return (new \Modules\Storefront\Http\Controllers\TabProductController(
+                app(\Modules\Product\RecentlyViewed::class)
+            ))->index(1, 1);
+        } catch (\Throwable $e) {
+            return collect();
+        }
     }
 
 
@@ -157,7 +174,7 @@ class HomePageComposer
             if (!is_null(setting("storefront_product_grid_section_tab_{$number}_product_type"))) {
                 return setting("storefront_product_grid_section_tab_{$number}_title");
             }
-        })->filter();
+        })->filter()->values();
     }
 
 
@@ -179,7 +196,7 @@ class HomePageComposer
             if (!is_null(setting("storefront_product_tabs_2_section_tab_{$number}_product_type"))) {
                 return setting("storefront_product_tabs_2_section_tab_{$number}_title");
             }
-        })->filter();
+        })->filter()->values();
 
         return [
             'title' => setting('storefront_product_tabs_2_section_title'),

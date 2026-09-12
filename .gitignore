@@ -37,3 +37,19 @@ vite.config.js.*
 *.lock
 composer.lock
 yarn.lock
+
+# Scratch and local dev artifacts
+/*.png
+/*.jpg
+/*.jpeg
+/*.pdf
+/*.txt
+/*.cjs
+/take_screenshot.js
+/deploy_media_assets.py
+/Context And materials/
+/apply_*.php
+/update_*.php
+/seed_*.php
+/scratch_*.php
+

@@ -1,6 +1,6 @@
 <div
     x-data="{ open: false }"
-    class="category-nav {{ request()->routeIs('home') ? 'show' : 'category-dropdown-menu' }}"
+    class="category-nav category-dropdown-menu"
 >
     <div class="category-nav-inner" @click="open = !open">
         <span>{{ trans('storefront::layouts.all_categories_header') }}</span>
